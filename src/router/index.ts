@@ -32,7 +32,7 @@ const routes = [
     component: () => import("../ui/views/AddressView.vue"),
   },
   {
-    path: "/restaurant/:id",
+    path: "/restaurants",
     name: "Restaurant",
     component: () => import("../ui/views/RestaurantView.vue"),
     props: true,
