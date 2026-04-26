@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <NavbarView />
+    <navbar_view />
 
     <main class="app-content">
       <router-view />
     </main>
 
-    <FooterView />
+    <footer_view />
   </div>
 </template>
 
 <script setup lang="ts">
-import NavbarView from "@/ui/components/NavbarView.vue";
-import FooterView from "@/ui/components/FooterView.vue";
+import navbar_view from "@/ui/components/navbar_view.vue";
+import footer_view from "@/ui/components/footer_view.vue";
 </script>
 
 <style scoped>

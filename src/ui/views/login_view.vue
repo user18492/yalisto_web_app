@@ -9,12 +9,12 @@
           <p class="text-secondary mb-0">Bienvenido de nuevo. Por favor, ingrese sus datos.</p>
         </div>
 
-        <form @submit.prevent="submit" novalidate>
+        <form @submit.prevent="submit_form" novalidate>
           <div class="mb-3">
             <label class="form-label fw-semibold" for="email">Correo electronico</label>
             <input
               id="email"
-              v-model="formData.email"
+              v-model="form_data.email"
               type="email"
               class="form-control form-control-lg login-input"
               :class="{ 'is-invalid': errors.email }"
@@ -31,8 +31,8 @@
             <div class="input-group input-group-lg">
               <input
                 id="password"
-                v-model="formData.password"
-                :type="showPassword ? 'text' : 'password'"
+                v-model="form_data.password"
+                :type="show_password ? 'text' : 'password'"
                 class="form-control login-input login-input-password"
                 :class="{ 'is-invalid': errors.password }"
                 placeholder="********"
@@ -41,12 +41,12 @@
               <button
                 type="button"
                 class="btn btn-outline-secondary login-toggle"
-                @click="toggleShowPassword"
-                :aria-label="showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
-                :aria-pressed="showPassword"
+                @click="toggle_show_password"
+                :aria-label="show_password ? 'Ocultar contrasena' : 'Mostrar contrasena'"
+                :aria-pressed="show_password"
               >
                 <svg
-                  v-if="showPassword"
+                  v-if="show_password"
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -89,12 +89,12 @@
           >
             <div class="form-check">
               <input
-                id="rememberMe"
-                v-model="formData.rememberMe"
+                id="remember_me"
+                v-model="form_data.remember_me"
                 class="form-check-input"
                 type="checkbox"
               />
-              <label class="form-check-label text-secondary-emphasis" for="rememberMe">
+              <label class="form-check-label text-secondary-emphasis" for="remember_me">
                 Recordarme
               </label>
             </div>
@@ -110,15 +110,15 @@
           <button
             type="submit"
             class="btn btn-primary btn-lg w-100 login-submit"
-            :disabled="isLoading"
+            :disabled="is_loading"
           >
             <span
-              v-if="isLoading"
+              v-if="is_loading"
               class="spinner-border spinner-border-sm me-2"
               role="status"
               aria-hidden="true"
             ></span>
-            <span>{{ isLoading ? "Ingresando..." : "Iniciar sesion" }}</span>
+            <span>{{ is_loading ? "Ingresando..." : "Iniciar sesion" }}</span>
           </button>
         </form>
 
@@ -136,19 +136,10 @@
 </template>
 
 <script setup lang="ts">
-import { useLoginViewModel } from "@/ui/viewmodels/useLoginViewModel";
+import { use_login_view_model } from "@/ui/viewmodels/use_login_view_model";
 
-/*
- * El ViewModel expone:
- * - formData (reactive con: email, password, rememberMe)
- * - errors (reactive con mensajes por campo: email, password)
- * - isLoading (ref boolean)
- * - showPassword (ref boolean)
- * - toggleShowPassword()
- * - submit() -> async, llama al ViewModel
- */
-const { formData, errors, isLoading, showPassword, toggleShowPassword, submit } =
-  useLoginViewModel();
+const { form_data, errors, is_loading, show_password, toggle_show_password, submit_form } =
+  use_login_view_model();
 </script>
 
 <style scoped>
