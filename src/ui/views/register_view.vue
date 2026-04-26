@@ -10,20 +10,36 @@
           <p class="text-secondary mb-0">Complete sus datos para comenzar</p>
         </div>
 
-        <form @submit.prevent="submit" novalidate>
+        <form @submit_form.prevent="submit_form" novalidate>
           <div class="mb-3">
-            <label class="form-label fw-semibold" for="fullName">Nombre completo</label>
+            <label class="form-label fw-semibold" for="name">Nombre</label>
             <input
-              id="fullName"
-              v-model="formData.fullName"
+              id="name"
+              v-model="form_data.name"
               type="text"
               class="form-control form-control-lg register-input"
-              :class="{ 'is-invalid': errors.fullName }"
-              placeholder="Ej. Maria Gonzalez"
+              :class="{ 'is-invalid': errors.name }"
+              placeholder="Ingrese su nombre"
               autocomplete="name"
             />
-            <div v-if="errors.fullName" class="invalid-feedback d-block">
-              {{ errors.fullName }}
+            <div v-if="errors.name" class="invalid-feedback d-block">
+              {{ errors.name }}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="name">Apellido</label>
+            <input
+              id="last_name"
+              v-model="form_data.last_name"
+              type="text"
+              class="form-control form-control-lg register-input"
+              :class="{ 'is-invalid': errors.last_name }"
+              placeholder="Ingrese su apellido"
+              autocomplete="last_name"
+            />
+            <div v-if="errors.last_name" class="invalid-feedback d-block">
+              {{ errors.last_name }}
             </div>
           </div>
 
@@ -31,11 +47,11 @@
             <label class="form-label fw-semibold" for="email">Correo electronico</label>
             <input
               id="email"
-              v-model="formData.email"
+              v-model="form_data.email"
               type="email"
               class="form-control form-control-lg register-input"
               :class="{ 'is-invalid': errors.email }"
-              placeholder="maria@ejemplo.com"
+              placeholder="correo@ejemplo.com"
               autocomplete="email"
             />
             <div v-if="errors.email" class="invalid-feedback d-block">
@@ -44,26 +60,26 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold" for="password">Contrasena</label>
+            <label class="form-label fw-semibold" for="password">Contraseña</label>
             <div class="input-group input-group-lg">
               <input
                 id="password"
-                v-model="formData.password"
-                :type="showPassword ? 'text' : 'password'"
+                v-model="form_data.password"
+                :type="show_password ? 'text' : 'password'"
                 class="form-control register-input register-input-password"
                 :class="{ 'is-invalid': errors.password }"
-                placeholder="Ingrese su contrasena"
+                placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                 autocomplete="new-password"
               />
               <button
                 type="button"
                 class="btn btn-outline-secondary register-toggle"
-                @click="toggleShowPassword"
-                :aria-label="showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
-                :aria-pressed="showPassword"
+                @click="toggle_show_password"
+                :aria-label="show_password ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                :aria-pressed="show_password"
               >
                 <svg
-                  v-if="showPassword"
+                  v-if="show_password"
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -102,26 +118,26 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold" for="confirmPassword">Confirmar contrasena</label>
+            <label class="form-label fw-semibold" for="confirmPassword">Confirmar contraseña</label>
             <div class="input-group input-group-lg">
               <input
                 id="confirmPassword"
-                v-model="formData.confirmPassword"
-                :type="showConfirmPassword ? 'text' : 'password'"
+                v-model="form_data.confirm_password"
+                :type="show_confirm_password ? 'text' : 'password'"
                 class="form-control register-input register-input-password"
-                :class="{ 'is-invalid': errors.confirmPassword }"
-                placeholder="Repita su contrasena"
+                :class="{ 'is-invalid': errors.confirm_password }"
+                placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                 autocomplete="new-password"
               />
               <button
                 type="button"
                 class="btn btn-outline-secondary register-toggle"
-                @click="toggleShowConfirmPassword"
-                :aria-label="showConfirmPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
-                :aria-pressed="showConfirmPassword"
+                @click="toggle_show_confirm_password"
+                :aria-label="show_confirm_password ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                :aria-pressed="show_confirm_password"
               >
                 <svg
-                  v-if="showConfirmPassword"
+                  v-if="show_confirm_password"
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -154,8 +170,8 @@
                 </svg>
               </button>
             </div>
-            <div v-if="errors.confirmPassword" class="invalid-feedback d-block">
-              {{ errors.confirmPassword }}
+            <div v-if="errors.confirm_password" class="invalid-feedback d-block">
+              {{ errors.confirm_password }}
             </div>
           </div>
 
@@ -163,35 +179,37 @@
             <div class="form-check">
               <input
                 id="acceptTerms"
-                v-model="formData.acceptTerms"
+                v-model="form_data.accept_terms"
                 class="form-check-input"
-                :class="{ 'is-invalid': errors.acceptTerms }"
+                :class="{ 'is-invalid': errors.accept_terms }"
+                @click="check_accept_terms"
                 type="checkbox"
               />
               <label class="form-check-label text-secondary-emphasis" for="acceptTerms">
                 Acepto los
                 <router-link to="/terminos" class="terms-link text-decoration-none fw-semibold">
-                  terminos y condiciones
+                  términos y condiciones
                 </router-link>
               </label>
             </div>
-            <div v-if="errors.acceptTerms" class="invalid-feedback d-block">
-              {{ errors.acceptTerms }}
+            <div v-if="errors.accept_terms" class="invalid-feedback d-block">
+              {{ errors.accept_terms }}
             </div>
           </div>
 
           <button
             type="submit"
-            class="btn btn-primary btn-lg w-100 register-submit"
-            :disabled="isLoading"
+            class="btn btn-primary btn-lg w-100 register-submit_form"
+            @click="submit_form"
+            :disabled="is_loading"
           >
             <span
-              v-if="isLoading"
+              v-if="is_loading"
               class="spinner-border spinner-border-sm me-2"
               role="status"
               aria-hidden="true"
             ></span>
-            <span>{{ isLoading ? "Registrando..." : "Registrarse" }}</span>
+            <span>{{ is_loading ? "Registrando..." : "Registrarse" }}</span>
           </button>
         </form>
 
@@ -207,27 +225,19 @@
 </template>
 
 <script setup lang="ts">
-import { useRegisterViewModel } from "@/ui/viewmodels/useRegisterViewModel";
+import { use_register_view_model } from "@/ui/viewmodels/use_register_view_model";
 
-/*
- * El ViewModel expone:
- * - formData (reactive con campos: fullName, email, password, confirmPassword, acceptTerms)
- * - errors (reactive con mensajes por campo)
- * - isLoading (ref boolean)
- * - showPassword (ref boolean)
- * - toggleShowPassword()
- * - submit() -> async, llama al ViewModel
- */
 const {
-  formData,
+  form_data,
   errors,
-  isLoading,
-  showPassword,
-  showConfirmPassword,
-  toggleShowPassword,
-  toggleShowConfirmPassword,
-  submit,
-} = useRegisterViewModel();
+  is_loading,
+  show_password,
+  show_confirm_password,
+  toggle_show_password,
+  toggle_show_confirm_password,
+  check_accept_terms,
+  submit_form,
+} = use_register_view_model();
 </script>
 
 <style scoped>
@@ -283,7 +293,7 @@ const {
   border-color: #e8c4a6;
 }
 
-.register-submit {
+.register-submit_form {
   min-height: 3.5rem;
   border: 0;
   border-radius: 1rem;
@@ -291,12 +301,12 @@ const {
   box-shadow: 0 0.75rem 1.5rem rgba(240, 127, 22, 0.22);
 }
 
-.register-submit:hover,
-.register-submit:focus {
+.register-submit_form:hover,
+.register-submit_form:focus {
   background-color: #d96f10;
 }
 
-.register-submit:disabled {
+.register-submit_form:disabled {
   background-color: #f3a766;
 }
 
