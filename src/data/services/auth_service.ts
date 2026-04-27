@@ -1,4 +1,6 @@
+import { AuthTokenModelMapper } from "@/data/mappers/auth_token_mapper";
 import { UserModelMapper } from "@/data/mappers/user_mapper";
+import type { AuthTokenModel } from "@/data/models/auth_token_model";
 import type { UserModel } from "@/data/models/user_model";
 
 type ApiResponse = {
@@ -31,7 +33,9 @@ const is_record = (value: unknown): value is Record<string, unknown> => {
   return typeof value === "object" && value !== null;
 };
 
-const register_user = async (payload: RegisterUserPayload): Promise<ServiceResponse<UserModel>> => {
+const register_user = async (
+  payload: RegisterUserPayload,
+): Promise<ServiceResponse<AuthTokenModel>> => {
   try {
     const user_model: UserModel = {
       name: payload.name,
@@ -74,7 +78,7 @@ const register_user = async (payload: RegisterUserPayload): Promise<ServiceRespo
       };
     }
 
-    const data: UserModel = UserModelMapper.from_json(response_body.data);
+    const data: AuthTokenModel = AuthTokenModelMapper.from_json(response_body.data);
 
     return {
       success,
@@ -89,7 +93,7 @@ const register_user = async (payload: RegisterUserPayload): Promise<ServiceRespo
   }
 };
 
-const login_user = async (payload: LoginUserPayload): Promise<ServiceResponse<UserModel>> => {
+const login_user = async (payload: LoginUserPayload): Promise<ServiceResponse<AuthTokenModel>> => {
   try {
     const user_model: UserModel = {
       email: payload.email,
@@ -130,7 +134,7 @@ const login_user = async (payload: LoginUserPayload): Promise<ServiceResponse<Us
       };
     }
 
-    const data: UserModel = UserModelMapper.from_json(response_body.data);
+    const data: AuthTokenModel = AuthTokenModelMapper.from_json(response_body.data);
 
     return {
       success,

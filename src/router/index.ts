@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { use_auth_store } from "@/stores/use_auth_store";
 
 const routes = [
   {
@@ -20,6 +21,7 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("../ui/views/CartView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/profile",
@@ -30,6 +32,7 @@ const routes = [
     path: "/address",
     name: "Address",
     component: () => import("../ui/views/AddressView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/restaurants",
@@ -42,9 +45,8 @@ const routes = [
     name: "Order",
     component: () => import("../ui/views/OrderView.vue"),
     props: true,
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
   },
-  // fallback 404
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
@@ -58,12 +60,15 @@ const router = createRouter({
   routes,
 });
 
-// ejemplo de guard global simple (ajusta según tu store/auth)
 router.beforeEach((to, from, next) => {
+  const auth_store = use_auth_store();
   const requiresAuth = to.meta.requiresAuth;
-  const isAuthenticated = !!localStorage.getItem("authToken"); // usa tu método real
-  if (requiresAuth && !isAuthenticated)
+  const isAuthenticated = auth_store.is_authenticated;
+
+  if (requiresAuth && !isAuthenticated) {
     return next({ name: "Login", query: { redirect: to.fullPath } });
+  }
+
   next();
 });
 
