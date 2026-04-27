@@ -11,11 +11,13 @@ const routes = [
     path: "/register",
     name: "Register",
     component: () => import("../ui/views/register_view.vue"),
+    meta: { guestOnly: true },
   },
   {
     path: "/login",
     name: "Login",
     component: () => import("../ui/views/login_view.vue"),
+    meta: { guestOnly: true },
   },
   {
     path: "/cart",
@@ -27,6 +29,7 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: () => import("../ui/views/ProfileView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/address",
@@ -62,11 +65,17 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const auth_store = use_auth_store();
-  const requiresAuth = to.meta.requiresAuth;
-  const isAuthenticated = auth_store.is_authenticated;
+  const is_authenticated = auth_store.is_authenticated;
 
-  if (requiresAuth && !isAuthenticated) {
+  const requires_auth = to.meta.requiresAuth;
+  const guest_only = to.meta.guestOnly;
+
+  if (requires_auth && !is_authenticated) {
     return next({ name: "Login", query: { redirect: to.fullPath } });
+  }
+
+  if (guest_only && is_authenticated) {
+    return next({ name: "Home" });
   }
 
   next();

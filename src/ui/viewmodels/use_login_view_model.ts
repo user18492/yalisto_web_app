@@ -1,6 +1,7 @@
 import { reactive, ref, type Ref } from "vue";
 import { auth_service, type LoginUserPayload } from "@/data/services/auth_service";
 import { use_auth_store } from "@/stores/use_auth_store";
+import { useRouter } from "vue-router";
 
 type FormData = {
   email: string;
@@ -23,6 +24,8 @@ type LoginViewModel = {
 const email_regex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function use_login_view_model(): LoginViewModel {
+  const router = useRouter();
+
   const auth_store = use_auth_store();
 
   const form_data = reactive<FormData>({
@@ -79,6 +82,8 @@ function use_login_view_model(): LoginViewModel {
 
       if (response.success && response.data !== undefined) {
         auth_store.save_token(response.data.token);
+
+        await router.push({ name: "Home" });
       }
     } finally {
       is_loading.value = false;
