@@ -2,6 +2,7 @@ import { AuthTokenModelMapper } from "@/data/mappers/auth_token_mapper";
 import { UserModelMapper } from "@/data/mappers/user_mapper";
 import type { AuthTokenModel } from "@/data/models/auth_token_model";
 import type { UserModel } from "@/data/models/user_model";
+import { get_auth_headers } from "./helpers/auth_headers_helper";
 
 type ApiResponse = {
   success?: unknown;
@@ -47,9 +48,7 @@ const register_user = async (
     const request_body: unknown = UserModelMapper.to_json(user_model);
     const response: Response = await fetch("/api/auth/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: get_auth_headers(),
       body: JSON.stringify(request_body),
     });
 
@@ -103,9 +102,7 @@ const login_user = async (payload: LoginUserPayload): Promise<ServiceResponse<Au
     const request_body: unknown = UserModelMapper.to_json(user_model);
     const response: Response = await fetch("/api/auth/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: get_auth_headers(),
       body: JSON.stringify(request_body),
     });
 

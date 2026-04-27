@@ -35,11 +35,11 @@ export function useNavbarViewModel(): NavbarViewModel {
   }
 
   function handle_storage_change(event: StorageEvent): void {
-    if (event.key === "authToken") {
+    if (event.key === "auth_token") {
       auth_store.load_token();
     }
 
-    if (event.key === "authToken" || event.key === "userAvatar") {
+    if (event.key === "auth_token" || event.key === "userAvatar") {
       sync_user_avatar();
     }
   }

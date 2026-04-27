@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 type AuthToken = string | null;
 
-const auth_token_storage_key: string = "authToken";
+const auth_token_storage_key: string = "auth_token";
 
 export const use_auth_store = defineStore("auth", () => {
   const auth_token = ref<AuthToken>(null);
